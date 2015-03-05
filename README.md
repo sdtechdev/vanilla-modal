@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/vanilla-modal.svg)](https://www.npmjs.com/package/vanilla-modal)
 
-### [Check out the demo.](http://dev.thephuse.com/vanilla-modal/demo/)
+### [Check out the demo.](http://phuse.ca/demos/vanilla-modal/demo/)
 
 ---
 
