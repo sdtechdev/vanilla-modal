@@ -1,6 +1,6 @@
 /**
  * @class VanillaModal
- * @version 1.1.1
+ * @version 1.1.2
  * @author Ben Ceglowski
  */
 class VanillaModal {
@@ -108,7 +108,7 @@ class VanillaModal {
    * @param {String} className
    */
   _addClass(el, className) {
-    if (! el instanceof HTMLElement) return;
+    if (el instanceof HTMLElement === false) return;
     var cssClasses = el.className.split(' ');
     if (cssClasses.indexOf(className) === -1) {
       cssClasses.push(className);
@@ -121,7 +121,7 @@ class VanillaModal {
    * @param {String} className
    */
   _removeClass(el, className) {
-    if (! el instanceof HTMLElement) return;
+    if (el instanceof HTMLElement === false) return;
     var cssClasses = el.className.split(' ');
     if (cssClasses.indexOf(className) > -1) {
       cssClasses.splice(cssClasses.indexOf(className), 1);
@@ -155,6 +155,7 @@ class VanillaModal {
    * @param {Event} e
    */
   _open(e) {
+    this._releaseNode();
     this.current = this._getElementContext(e);
     if (this.current instanceof HTMLElement === false) return console.error('VanillaModal target must exist on page.');
     if (typeof this.$$.onBeforeOpen === 'function') this.$$.onBeforeOpen.call(this);

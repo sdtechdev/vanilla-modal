@@ -7,7 +7,7 @@ var _prototypeProperties = function (child, staticProps, instanceProps) {
 
 /**
  * @class VanillaModal
- * @version 1.1.0
+ * @version 1.1.2
  * @author Ben Ceglowski
  */
 var VanillaModal = (function () {
@@ -137,7 +137,7 @@ var VanillaModal = (function () {
        * @param {String} className
        */
       value: function AddClass(el, className) {
-        if (!el instanceof HTMLElement) return;
+        if (el instanceof HTMLElement === false) return;
         var cssClasses = el.className.split(" ");
         if (cssClasses.indexOf(className) === -1) {
           cssClasses.push(className);
@@ -155,7 +155,7 @@ var VanillaModal = (function () {
        * @param {String} className
        */
       value: function RemoveClass(el, className) {
-        if (!el instanceof HTMLElement) return;
+        if (el instanceof HTMLElement === false) return;
         var cssClasses = el.className.split(" ");
         if (cssClasses.indexOf(className) > -1) {
           cssClasses.splice(cssClasses.indexOf(className), 1);
@@ -207,6 +207,7 @@ var VanillaModal = (function () {
        * @param {Event} e
        */
       value: function Open(e) {
+        this._releaseNode();
         this.current = this._getElementContext(e);
         if (this.current instanceof HTMLElement === false) return console.error("VanillaModal target must exist on page.");
         if (typeof this.$$.onBeforeOpen === "function") this.$$.onBeforeOpen.call(this);
