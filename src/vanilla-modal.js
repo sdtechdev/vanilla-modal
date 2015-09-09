@@ -181,13 +181,16 @@ class VanillaModal {
    * @param {Event} e
    */
   _close(e) {
-    if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(this);
-    this._removeClass(this.$.page, this.$$.class);
-    var transitions = this._detectTransition();
-    if (this.$$.transitions && this.$$.transitionEnd && transitions) {
-      this._closeModalWithTransition();
-    } else {
-      this._closeModal();
+    if(this.isOpen === true){
+      this.isOpen = false;
+      if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(this);
+      this._removeClass(this.$.page, this.$$.class);
+      var transitions = this._detectTransition();
+      if (this.$$.transitions && this.$$.transitionEnd && transitions) {
+        this._closeModalWithTransition();
+      } else {
+        this._closeModal();
+      }
     }
   }
   
