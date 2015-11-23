@@ -5,12 +5,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-6to5');
+  grunt.loadNpmTasks('grunt-babel');
 
   grunt.initConfig({
-    
+
     pkg: grunt.file.readJSON('package.json'),
-    
+
     "jshint" : {
       options: {
         esnext : true,
@@ -24,18 +24,35 @@ module.exports = function(grunt) {
         src: ['src/vanilla-modal.js']
       }
     },
-    
-    "6to5" : {
+
+    "babel" : {
       options : {
-        sourceMap: true
+        sourceMap : true,
+        plugins : [
+          "check-es2015-constants",
+          "transform-es2015-arrow-functions",
+          "transform-es2015-block-scoped-functions",
+          "transform-es2015-block-scoping",
+          "transform-es2015-classes",
+          "transform-es2015-computed-properties",
+          "transform-es2015-destructuring",
+          "transform-es2015-for-of",
+          "transform-es2015-function-name",
+          "transform-es2015-literals",
+          "transform-es2015-object-super",
+          "transform-es2015-parameters",
+          "transform-es2015-shorthand-properties",
+          "transform-es2015-template-literals",
+          "transform-es2015-modules-umd"
+        ]
       },
-      dist : {
+      target : {
         files : {
           "dist/vanilla-modal.js" : "src/vanilla-modal.js"
         }
       }
     },
-    
+
     "uglify" : {
       target : {
         options : {
@@ -47,7 +64,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
     "watch" : {
       scripts: {
         files: ["src/vanilla-modal.js"],
@@ -57,11 +74,11 @@ module.exports = function(grunt) {
         }
       }
     }
-    
+
   });
-    
-  grunt.registerTask("default", ["6to5", "uglify", "watch"]);
-  grunt.registerTask("build", ["jshint", "6to5", "uglify"]);
+
+  grunt.registerTask("default", ["babel", "uglify", "watch"]);
+  grunt.registerTask("build", ["jshint", "babel", "uglify"]);
   grunt.registerTask("minify", ["uglify"]);
 
 };

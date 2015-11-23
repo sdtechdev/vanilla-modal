@@ -3,13 +3,13 @@
  * @version 1.1.2
  * @author Ben Ceglowski
  */
-class VanillaModal {
-  
+export class VanillaModal {
+
   /**
    * @param {Object} [userSettings]
    */
   constructor(userSettings) {
-    
+
     this.$$ = {
       modal : '.modal',
       modalInner : '.modal-inner',
@@ -28,7 +28,7 @@ class VanillaModal {
       onOpen : function() {},
       onClose : function() {}
     };
-    
+
     this._applyUserSettings(userSettings);
     this.error = false;
     this.isOpen = false;
@@ -37,16 +37,16 @@ class VanillaModal {
     this.close = this._close.bind(this);
     this.$$.transitionEnd = this._transitionEndVendorSniff();
     this.$ = this._setupDomNodes();
-    
+
     if (!this.error) {
       this._addLoadedCssClass();
       this._events().add();
     } else {
       console.error('Please fix errors before proceeding.');
     }
-    
+
   }
-  
+
   /**
    * @param {Object} userSettings
    */
@@ -59,7 +59,7 @@ class VanillaModal {
       }
     }
   }
-  
+
   _transitionEndVendorSniff() {
     if (this.$$.transitions === false) return;
     var el = document.createElement('div');
@@ -75,7 +75,7 @@ class VanillaModal {
       }
     }
   }
-  
+
   /**
    * @param {String} selector
    * @param {Node} parent
@@ -89,7 +89,7 @@ class VanillaModal {
     }
     return node;
   }
-  
+
   _setupDomNodes() {
     var $ = {};
     $.modal = this._getNode(this.$$.modal);
@@ -98,11 +98,11 @@ class VanillaModal {
     $.modalContent = this._getNode(this.$$.modalContent, this.modal);
     return $;
   }
-  
+
   _addLoadedCssClass() {
     this._addClass(this.$.page, this.$$.loadClass);
   }
-  
+
   /**
    * @param {Node} el
    * @param {String} className
@@ -115,7 +115,7 @@ class VanillaModal {
     }
     el.className = cssClasses.join(' ');
   }
-  
+
   /**
    * @param {Node} el
    * @param {String} className
@@ -128,16 +128,16 @@ class VanillaModal {
     }
     el.className = cssClasses.join(' ');
   }
-  
+
   _setOpenId() {
     var id = this.current.id || 'anonymous';
     this.$.page.setAttribute('data-current-modal', id);
   }
-  
+
   _removeOpenId() {
     this.$.page.removeAttribute('data-current-modal');
   }
-  
+
   /**
    * @param {mixed} e
    */
@@ -150,7 +150,7 @@ class VanillaModal {
       return console.error('No selector supplied to open()');
     }
   }
-  
+
   /**
    * @param {Event} e
    */
@@ -165,7 +165,7 @@ class VanillaModal {
     this.isOpen = true;
     if (typeof this.$$.onOpen === 'function') this.$$.onOpen.call(this);
   }
-  
+
   _detectTransition() {
     var css = window.getComputedStyle(this.$.modal, null);
     var transitionDuration = ['transitionDuration', 'oTransitionDuration', 'MozTransitionDuration', 'webkitTransitionDuration'];
@@ -176,7 +176,7 @@ class VanillaModal {
     });
     return (hasTransition.length) ? true : false;
   }
-    
+
   /**
    * @param {Event} e
    */
@@ -193,7 +193,7 @@ class VanillaModal {
       }
     }
   }
-  
+
   _closeModal() {
     this._removeOpenId(this.$.page);
     this._releaseNode();
@@ -201,7 +201,7 @@ class VanillaModal {
     this.current = null;
     if (typeof this.$$.onClose === 'function') this.$$.onClose.call(this);
   }
-  
+
   _closeModalWithTransition() {
     var _closeTransitionHandler = function() {
       this.$.modal.removeEventListener(this.$$.transitionEnd, _closeTransitionHandler);
@@ -209,19 +209,23 @@ class VanillaModal {
     }.bind(this);
     this.$.modal.addEventListener(this.$$.transitionEnd, _closeTransitionHandler);
   }
-  
+
   _captureNode() {
-    while (this.current.childNodes.length > 0) {
-      this.$.modalContent.appendChild(this.current.childNodes[0]);
+    if (this.current) {
+      while (this.current.childNodes.length > 0) {
+        this.$.modalContent.appendChild(this.current.childNodes[0]);
+      }
     }
   }
-  
+
   _releaseNode() {
-    while (this.$.modalContent.childNodes.length > 0) {
-      this.current.appendChild(this.$.modalContent.childNodes[0]);
+    if (this.current) {
+      while (this.$.modalContent.childNodes.length > 0) {
+        this.current.appendChild(this.$.modalContent.childNodes[0]);
+      }
     }
   }
-  
+
   /**
    * @param {Event} e
    */
@@ -232,20 +236,20 @@ class VanillaModal {
       this.close();
     }
   }
-  
+
   /**
    * @param {Event} e
    */
   _outsideClickHandler(e) {
     if (this.$$.clickOutside !== true) return;
     var node = e.target;
-    while(node != document.body) {
+    while(node && node != document.body) {
       if (node === this.$.modalInner) return;
       node = node.parentNode;
     }
     this.close();
   }
-  
+
   /**
    * @param {Event} e
    * @param {String} selector
@@ -255,14 +259,14 @@ class VanillaModal {
     var matches = (el.document || el.ownerDocument).querySelectorAll(selector);
     for (let i = 0; i < matches.length; i++) {
       let child = el;
-      while (child !== document.body) {
+      while (child && child !== document.body) {
         if (child === matches[i]) return child;
         child = child.parentNode;
       }
     }
     return null;
   }
-  
+
   /**
    * @param {Event} e
    */
@@ -273,7 +277,7 @@ class VanillaModal {
       return this.open(matches);
     }
   }
-  
+
   /**
    * @param {Event} e
    */
@@ -283,24 +287,24 @@ class VanillaModal {
       return this.close();
     }
   }
-  
+
   /**
    * @private {Function} add
    */
   _events() {
-    
+
     let _closeKeyHandler = this._closeKeyHandler.bind(this);
     let _outsideClickHandler = this._outsideClickHandler.bind(this);
     let _delegateOpen = this._delegateOpen.bind(this);
     let _delegateClose = this._delegateClose.bind(this);
-    
+
     var add = function() {
       this.$.modal.addEventListener('click', _outsideClickHandler);
       document.addEventListener('keydown', _closeKeyHandler);
       document.addEventListener('click', _delegateOpen);
       document.addEventListener('click', _delegateClose);
     };
-  
+
     this.destroy = function() {
       this.close();
       this.$.modal.removeEventListener('click', _outsideClickHandler);
@@ -308,23 +312,11 @@ class VanillaModal {
       document.removeEventListener('click', _delegateOpen);
       document.removeEventListener('click', _delegateClose);
     };
-    
+
     return {
       add : add.bind(this)
     };
-    
-  }
-   
-}
 
-(function() {
-  if (typeof define === 'function' && define.amd) {
-    define('VanillaModal', function () {
-      return VanillaModal;
-    });
-  } else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = VanillaModal;
-  } else {
-    window.VanillaModal = VanillaModal;
   }
-})();
+
+}

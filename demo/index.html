@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css.css">
   </head>
   <body>
-    
+
     <div class="modal-links">
       <ul>
         <li>
@@ -21,28 +21,28 @@
         </li>
       </ul>
     </div>
-    
+
     <div id="modal-1" style="display:none">
       <img src="http://i.imgur.com/AzKAV.jpg" width="239" height="170" alt="Just Can't Reach.">
     </div>
-    
+
     <div id="modal-2" style="display:none">
       <img src="http://www.gifbin.com/bin/032014/1395614704_cat_vs_steam.gif" width="396" height="275" alt="Almost Caught It.">
     </div>
-    
+
     <div id="modal-3" style="display:none">
       <iframe src="http://phuse.ca" width="360" height="576" frameborder="0"></iframe>
     </div>
-    
+
     <div class="modal">
       <div class="modal-inner">
         <a rel="modal:close">&times;</a>
         <div class="modal-content"></div>
       </div>
     </div>
-    
+
     <script src="../dist/vanilla-modal.js"></script>
-    <script>var modal = new VanillaModal({
+    <script>var modal = new vanillaModal.VanillaModal({
       onBeforeOpen : function() {
         console.log('onBeforeOpen hook');
       },

@@ -39,29 +39,30 @@ Not to worry. `open` and `close` event listeners are delegated so the modal scri
 
 * The script can be installed from NPM and included using Browserify:
 
-	**Command line**:
+	**CLI**:
 	```sh
 	npm install --save-dev vanilla-modal
 	```
-	
-	**JavaScript**:
+
+* ES 2015
+  ```javascript
+  import VanillaModal from 'vanilla-modal';
+  ```
+
+* CommonJS:
 	```javascript
-	var VanillaModal = require('vanilla-modal');
+	var VanillaModal = require('vanilla-modal');`
 	```
 
-* Browserify (without NPM), Webpack and CommonJS aficionados get to use the following line:
+* AMD
 	```javascript
-	var VanillaModal = require('/path/to/vanilla-modal');`
+	require(['node_modules/vanilla-modal/dist/vanilla-modal.js'], function(VanillaModal) { ... });
 	```
 
-* For RequireJS, Webpack AMD and similar asynchronous module loaders, use:
-	```javascript
-	require(['/path/to/vanilla-modal'], function(VanillaModal) { ... });
-	```
-
-* Or, if you just can't bear to be fancy:
+* Or include it in your page. Note the UMD syntax below.
 	```html
 	<script src="/path/to/vanilla-modal.js"></script>
+  <script>var modal = new vanillaModal.VanillaModal({...});</script>
 	```
 
 ---
