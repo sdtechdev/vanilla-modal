@@ -51,12 +51,12 @@ Not to worry. `open` and `close` event listeners are delegated so the modal scri
 
 * CommonJS:
 	```javascript
-	var VanillaModal = require('vanilla-modal');`
+	var VanillaModal = require('vanilla-modal').VanillaModal;
 	```
 
 * AMD
 	```javascript
-	require(['node_modules/vanilla-modal/dist/vanilla-modal.js'], function(VanillaModal) { ... });
+	require(['node_modules/vanilla-modal/dist/vanilla-modal.js'], function(vanillaModal) { ... });
 	```
 
 * Or include it in your page. Note the UMD syntax below.
