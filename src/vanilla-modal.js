@@ -1,6 +1,6 @@
 /**
  * @class VanillaModal
- * @version 1.1.2
+ * @version 1.2.1
  * @author Ben Ceglowski
  */
 export class VanillaModal {

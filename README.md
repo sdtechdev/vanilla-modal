@@ -46,7 +46,7 @@ Not to worry. `open` and `close` event listeners are delegated so the modal scri
 
 * ES 2015
   ```javascript
-  import VanillaModal from 'vanilla-modal';
+  import { VanillaModal } from 'vanilla-modal';
   ```
 
 * CommonJS:
