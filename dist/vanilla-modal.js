@@ -63,10 +63,10 @@
         closeKey: 27,
         transitions: true,
         transitionEnd: null,
-        onBeforeOpen: function onBeforeOpen() {},
-        onBeforeClose: function onBeforeClose() {},
-        onOpen: function onOpen() {},
-        onClose: function onClose() {}
+        onBeforeOpen: null,
+        onBeforeClose: null,
+        onOpen: null,
+        onClose: null
       };
 
       this._applyUserSettings(userSettings);
@@ -220,12 +220,12 @@
         this._releaseNode();
         this.current = this._getElementContext(e);
         if (this.current instanceof HTMLElement === false) return console.error('VanillaModal target must exist on page.');
-        if (typeof this.$$.onBeforeOpen === 'function') this.$$.onBeforeOpen.call(this);
+        if (typeof this.$$.onBeforeOpen === 'function') this.$$.onBeforeOpen.call(e, this);
         this._captureNode();
         this._addClass(this.$.page, this.$$.class);
         this._setOpenId();
         this.isOpen = true;
-        if (typeof this.$$.onOpen === 'function') this.$$.onOpen.call(this);
+        if (typeof this.$$.onOpen === 'function') this.$$.onOpen.call(e, this);
       }
     }, {
       key: '_detectTransition',
@@ -249,7 +249,7 @@
       value: function _close(e) {
         if (this.isOpen === true) {
           this.isOpen = false;
-          if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(this);
+          if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(e, this);
           this._removeClass(this.$.page, this.$$.class);
           var transitions = this._detectTransition();
           if (this.$$.transitions && this.$$.transitionEnd && transitions) {

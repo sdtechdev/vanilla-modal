@@ -1,6 +1,6 @@
 /**
  * @class VanillaModal
- * @version 1.2.2
+ * @version 1.2.3
  * @author Ben Ceglowski
  */
 export class VanillaModal {
@@ -23,10 +23,10 @@ export class VanillaModal {
       closeKey : 27,
       transitions : true,
       transitionEnd : null,
-      onBeforeOpen : function() {},
-      onBeforeClose : function() {},
-      onOpen : function() {},
-      onClose : function() {}
+      onBeforeOpen : null,
+      onBeforeClose : null,
+      onOpen : null,
+      onClose : null
     };
 
     this._applyUserSettings(userSettings);
@@ -158,12 +158,12 @@ export class VanillaModal {
     this._releaseNode();
     this.current = this._getElementContext(e);
     if (this.current instanceof HTMLElement === false) return console.error('VanillaModal target must exist on page.');
-    if (typeof this.$$.onBeforeOpen === 'function') this.$$.onBeforeOpen.call(this);
+    if (typeof this.$$.onBeforeOpen === 'function') this.$$.onBeforeOpen.call(e, this);
     this._captureNode();
     this._addClass(this.$.page, this.$$.class);
     this._setOpenId();
     this.isOpen = true;
-    if (typeof this.$$.onOpen === 'function') this.$$.onOpen.call(this);
+    if (typeof this.$$.onOpen === 'function') this.$$.onOpen.call(e, this);
   }
 
   _detectTransition() {
@@ -183,7 +183,7 @@ export class VanillaModal {
   _close(e) {
     if(this.isOpen === true){
       this.isOpen = false;
-      if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(this);
+      if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(e, this);
       this._removeClass(this.$.page, this.$$.class);
       var transitions = this._detectTransition();
       if (this.$$.transitions && this.$$.transitionEnd && transitions) {
