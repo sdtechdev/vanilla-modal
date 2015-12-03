@@ -43,17 +43,17 @@
 
     <script src="../dist/vanilla-modal.js"></script>
     <script>var modal = new vanillaModal.VanillaModal({
-      onBeforeOpen : function() {
-        console.log('onBeforeOpen hook');
+      onBeforeOpen : function(e) {
+        console.log('onBeforeOpen hook', e, this);
       },
-      onOpen : function() {
-        console.log('onOpen hook');
+      onOpen : function(e) {
+        console.log('onOpen hook', e, this);
       },
-      onBeforeClose : function() {
-        console.log('onBeforeClose hook');
+      onBeforeClose : function(e) {
+        console.log('onBeforeClose hook', e, this);
       },
-      onClose : function() {
-        console.log('onClose hook');
+      onClose : function(e) {
+        console.log('onClose hook', e, this);
       }
     });</script>
   </body>

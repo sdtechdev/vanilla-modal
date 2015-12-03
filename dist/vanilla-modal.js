@@ -60,7 +60,7 @@
         class: 'modal-visible',
         loadClass: 'vanilla-modal',
         clickOutside: true,
-        closeKey: 27,
+        closeKeys: [27],
         transitions: true,
         transitionEnd: null,
         onBeforeOpen: null,
@@ -216,16 +216,16 @@
 
     }, {
       key: '_open',
-      value: function _open(e) {
+      value: function _open(matches, e) {
         this._releaseNode();
-        this.current = this._getElementContext(e);
+        this.current = this._getElementContext(matches);
         if (this.current instanceof HTMLElement === false) return console.error('VanillaModal target must exist on page.');
-        if (typeof this.$$.onBeforeOpen === 'function') this.$$.onBeforeOpen.call(e, this);
+        if (typeof this.$$.onBeforeOpen === 'function') this.$$.onBeforeOpen.call(this, e);
         this._captureNode();
         this._addClass(this.$.page, this.$$.class);
         this._setOpenId();
         this.isOpen = true;
-        if (typeof this.$$.onOpen === 'function') this.$$.onOpen.call(e, this);
+        if (typeof this.$$.onOpen === 'function') this.$$.onOpen.call(this, e);
       }
     }, {
       key: '_detectTransition',
@@ -249,31 +249,31 @@
       value: function _close(e) {
         if (this.isOpen === true) {
           this.isOpen = false;
-          if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(e, this);
+          if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(this, e);
           this._removeClass(this.$.page, this.$$.class);
           var transitions = this._detectTransition();
           if (this.$$.transitions && this.$$.transitionEnd && transitions) {
-            this._closeModalWithTransition();
+            this._closeModalWithTransition(e);
           } else {
-            this._closeModal();
+            this._closeModal(e);
           }
         }
       }
     }, {
       key: '_closeModal',
-      value: function _closeModal() {
+      value: function _closeModal(e) {
         this._removeOpenId(this.$.page);
         this._releaseNode();
         this.isOpen = false;
         this.current = null;
-        if (typeof this.$$.onClose === 'function') this.$$.onClose.call(this);
+        if (typeof this.$$.onClose === 'function') this.$$.onClose.call(this, e);
       }
     }, {
       key: '_closeModalWithTransition',
-      value: function _closeModalWithTransition() {
+      value: function _closeModalWithTransition(e) {
         var _closeTransitionHandler = (function () {
           this.$.modal.removeEventListener(this.$$.transitionEnd, _closeTransitionHandler);
-          this._closeModal();
+          this._closeModal(e);
         }).bind(this);
         this.$.modal.addEventListener(this.$$.transitionEnd, _closeTransitionHandler);
       }
@@ -303,10 +303,10 @@
     }, {
       key: '_closeKeyHandler',
       value: function _closeKeyHandler(e) {
-        if (typeof this.$$.closeKey !== 'number') return;
-        if (e.which === this.$$.closeKey && this.isOpen === true) {
+        if (Object.prototype.toString.call(this.$$.closeKeys) !== '[object Array]' || this.$$.closeKeys.length === 0) return;
+        if (this.$$.closeKeys.indexOf(e.which) > -1 && this.isOpen === true) {
           e.preventDefault();
-          this.close();
+          this.close(e);
         }
       }
 
@@ -323,7 +323,7 @@
           if (node === this.$.modalInner) return;
           node = node.parentNode;
         }
-        this.close();
+        this.close(e);
       }
 
       /**
@@ -356,7 +356,7 @@
         var matches = this._matches(e, this.$$.open);
         if (matches) {
           e.preventDefault();
-          return this.open(matches);
+          return this.open(matches, e);
         }
       }
 
@@ -369,7 +369,7 @@
       value: function _delegateClose(e) {
         if (this._matches(e, this.$$.close)) {
           e.preventDefault();
-          return this.close();
+          return this.close(e);
         }
       }
 

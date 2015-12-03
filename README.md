@@ -22,7 +22,7 @@ That's not a question and this is not the script you're looking for. It is licen
 
 ### Why plain JavaScript?
 
-Because of the bloat of DOM libraries. Because of the dreadful performance of monolithic JavaScript frameworks. Because decoupled is the way to go. Because standard JavaScript provides everything you need for this task. Because sometimes, a 7KB minified (1.8KB gzipped) script is all you need. Also because sometimes you're adding this to an already glorious JavaScript overhead, e.g. 97 gzipped kilobytes of Ember.js.
+Because of the bloat of DOM libraries. Because of the dreadful performance of monolithic JavaScript frameworks. Because decoupled is the way to go. Because standard JavaScript provides everything you need for this task. Because sometimes, an incrediblt tiny script is all you need. Also because sometimes you're adding this to an already glorious JavaScript overhead.
 
 ### What about CSS Modal?
 
@@ -211,12 +211,12 @@ The API is feature-frozen for the `version 1.x.x` branch.
   loadClass : 'vanilla-modal',
   class : 'modal-visible',
   clickOutside : false,
-  closeKey : 27,
+  closeKeys : [27],
   transitions : true,
-  onBeforeOpen : function() {},
-  onBeforeClose : function() {},
-  onOpen : function() {},
-  onClose : function() {}
+  onBeforeOpen : null,
+  onBeforeClose : null,
+  onOpen : null,
+  onClose : null
 }
 ```
 
@@ -256,9 +256,9 @@ The API is feature-frozen for the `version 1.x.x` branch.
 
   If set to `true`, a click outside the modal will fire a `close()` event. Otherwise, the only ways to close the modal are to hit `[esc]` or click an item covered by the `close` query selector (default: `[rel="modal:close"]`).
 
-* `{Boolean|Number} closeKey`
+* `{Array} closeKeys`
 
-  If set to a keycode, hitting that keycode while the modal is open will fire a `close()` event. Set to `false` to disable.
+  Hitting any keycodes contained within this array while the modal is open will fire a `close()` event. Set this to `false` or an empty array to disable keyboard modal closure. Defaults to [27], which is `esc`.
 
 * `{Boolean} transitions`
 
@@ -266,21 +266,21 @@ The API is feature-frozen for the `version 1.x.x` branch.
 
 * `{Function} onBeforeOpen`
 
-  A function hook to fire before opening. This function is bound to the modal instance.
+  A function hook to fire before opening. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
 
 * `{Function} onBeforeClose`
 
-  A function hook to fire before closing. This function is bound to the modal instance.
+  A function hook to fire before closing. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
 
 * `{Function} onOpen`
 
-  A function hook to fire on opening. This function is bound to the modal instance.
+  A function hook to fire on opening. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
 
 * `{Function} onClose`
 
-  A function hook to fire on closing. This function is bound to the modal instance. I just cheated & copy-pasted the last few lines.
+  A function hook to fire on closing. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
 
 ---
 ## Compatibility
 
-This script works in the evergreen mobile & desktop browsers, IE 9 and above, and frankly doesn't give two hoots about Blackberry or any prior versions of IE (read: they're un-tested, but feel free to test, fork and shim).
+This script works in the evergreen mobile & desktop browsers, IE 9 and above. It is thus far untested in Blackberry's browser and Opera Mini.
