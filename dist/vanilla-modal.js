@@ -356,6 +356,7 @@
         var matches = this._matches(e, this.$$.open);
         if (matches) {
           e.preventDefault();
+          e.delegateTarget = matches;
           return this.open(matches, e);
         }
       }
@@ -387,10 +388,10 @@
         var _delegateClose = this._delegateClose.bind(this);
 
         var add = function add() {
-          this.$.modal.addEventListener('click', _outsideClickHandler);
-          document.addEventListener('keydown', _closeKeyHandler);
-          document.addEventListener('click', _delegateOpen);
-          document.addEventListener('click', _delegateClose);
+          this.$.modal.addEventListener('click', _outsideClickHandler, false);
+          document.addEventListener('keydown', _closeKeyHandler, false);
+          document.addEventListener('click', _delegateOpen, false);
+          document.addEventListener('click', _delegateClose, false);
         };
 
         this.destroy = function () {

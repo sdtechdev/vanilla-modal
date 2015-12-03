@@ -1,6 +1,6 @@
 /**
  * @class VanillaModal
- * @version 1.2.4
+ * @version 1.2.5
  * @author Ben Ceglowski
  */
 export class VanillaModal {
@@ -274,6 +274,7 @@ export class VanillaModal {
     var matches = this._matches(e, this.$$.open);
     if (matches) {
       e.preventDefault();
+      e.delegateTarget = matches;
       return this.open(matches, e);
     }
   }
@@ -299,10 +300,10 @@ export class VanillaModal {
     let _delegateClose = this._delegateClose.bind(this);
 
     var add = function() {
-      this.$.modal.addEventListener('click', _outsideClickHandler);
-      document.addEventListener('keydown', _closeKeyHandler);
-      document.addEventListener('click', _delegateOpen);
-      document.addEventListener('click', _delegateClose);
+      this.$.modal.addEventListener('click', _outsideClickHandler, false);
+      document.addEventListener('keydown', _closeKeyHandler, false);
+      document.addEventListener('click', _delegateOpen, false);
+      document.addEventListener('click', _delegateClose, false);
     };
 
     this.destroy = function() {
