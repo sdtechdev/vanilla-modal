@@ -2,47 +2,48 @@
 
 [![npm version](https://badge.fury.io/js/vanilla-modal.svg)](https://www.npmjs.com/package/vanilla-modal)
 
-### [Check out the demo.](http://phuse.ca/demos/vanilla-modal/demo/)
+[See the demo.](http://thephuse.github.io/vanilla-modal)
 
----
+### A tiny, flexible, completely dependency-free, CSS-powered JavaScript modal.
 
-### A flexible, dependency-free, CSS-powered JavaScript modal.
+Written in ECMAScript 2015, and transpiled for universal use with Babel 6.
 
-Written in clean ECMAScript 6 and transpiled using 6to5.
 
 ## License
 
-MIT. Please feel free to offer any input - pull requests, bug tracking, suggestions are all welcome.
+[MIT](https://github.com/thephuse/vanilla-modal/blob/master/LICENSE). Please feel free to offer any assistance - pull requests, bug tracking, suggestions are all welcome. The issue tracker is over [here](https://github.com/thephuse/vanilla-modal/issues).
 
-## FAQ
 
-### I'm looking for a jQuery modal I can copy & paste into my site.
+## Q & A
 
-That's not a question and this is not the script you're looking for. It is licensed under the MIT License though, so if you'd like to base a jQuery plugin on it, feel free to do so. Just remember that losing native DOM bindings means losing speed, too.
+#### Why?
 
-### Why plain JavaScript?
+I was pretty fed up looking for a modal script that wasn't variously:
 
-Because of the bloat of DOM libraries. Because of the dreadful performance of monolithic JavaScript frameworks. Because decoupled is the way to go. Because standard JavaScript provides everything you need for this task. Because sometimes, an incrediblt tiny script is all you need. Also because sometimes you're adding this to an already glorious JavaScript overhead.
+a) Bloated.
+b) Inaccessible.
+c) Needlessly complicated.
+d) Riddled with third party dependencies (here's looking at you, jQuery).
+e) Trying to hijack beautiful hardware-accelerated CSS transitions using JavaScript.
 
-### What about CSS Modal?
+#### Can I integrate this with a single page app framework?
 
-Great though [CSS Modal](http://drublic.github.io/css-modal/) (and similar solutions) are, developers may encounter problems when building a stateful UI, as using the CSS `:target` pseudo-class invariably means changing the window's `location.hash` property. This can cause havoc with client-side routers, as well as obfuscate the modal on the offchance that any anchor inside it changes the window's hash.
+Since the modal's `open` and `close` event listeners are delegated from the document, you can use this script with any client-side routing or DOM-affecting framework.
 
-### My app is built using JavaScript framework `foo`
+If you're concerned about garbage collection, you may be pleased to know there's a `modal.destroy()` method baked in, which removes all internal events and references.
 
-Not to worry. `open` and `close` event listeners are delegated so the modal script will keep running irrespective of whether you're using a client-side router. If you're desperate for garbage collection (e.g. if your app's made from last week's haddock surprise), you might be pleased to know there's a `destroy` method baked into the modal too.
 
-### Usage and Examples
----
+## Usage and Examples
 
-#### 1. Firstly, include the script in your project.
+#### 1. Install the script.
+
+```sh
+npm install vanilla-modal --save-dev
+```
+
+#### 2. Include the script in your project.
 
 * The script can be installed from NPM and included using Browserify:
-
-	**CLI**:
-	```sh
-	npm install --save-dev vanilla-modal
-	```
 
 * ES 2015
   ```javascript
@@ -59,25 +60,13 @@ Not to worry. `open` and `close` event listeners are delegated so the modal scri
 	require(['node_modules/vanilla-modal/dist/vanilla-modal.js'], function(vanillaModal) { ... });
 	```
 
-* Or include it in your page. Note the UMD syntax below.
-	```html
-	<script src="/path/to/vanilla-modal.js"></script>
-  <script>var modal = new vanillaModal.VanillaModal({...});</script>
-	```
+#### 3. Create the modal's container using HTML.
 
----
-#### 2. Next, instantiate your modal.
+This part is important. *Vanilla Modal* doesn't use any template strings or DOM building algorithms (although this is on the roadmap for version 2).
 
-It's as simple as typing:
-```javascript
-var modal = new VanillaModal(opts);
-```
-...where `opts` is a hash of settings to supply the constructor with on instantiation.-
+As a result, you will need to add your modal's _container_ HTML to your document - by using JavaScript ahead of the modal's instantiation, or by writing HTML into your document.
 
----
-#### 3. Write your HTML!
-
-This part is important. *Vanilla Modal* doesn't use any fancy string interpolation or template syntax. You'll need some good, solid elbow grease to build up your modal's layout in the DOM. The payoff? You can make the modal look like anything you want.
+The payoff is that you can make the modal look any way you wish.
 
 ```html
 <div class="modal">
@@ -88,85 +77,108 @@ This part is important. *Vanilla Modal* doesn't use any fancy string interpolati
 </div>
 ```
 
-Next, add your modal content to hidden containers on the page. The modal will inline the contents **inside** the selected container.
+Following this, create some off-screen containers to house your modal's content. Give each an ID to make them selectable via anchor elements, and accessible using JavaScript-disabled browsers.
+
+The modal will pick up the contents that are _inside_ the container with the ID specified by the triggering anchor's `href` attribute. It will place them in the `modalContent` container specified by your settings object. In the example above, the default container class of `.modal-content` is used.
 
 ```html
-<!--
-  Give each one an ID attribute. It's totally possible to have
-  more than one modal per page, and where they live in the DOM
-  doesn't matter. Just remember that their innerHTML will be
-  hauled out of its container and inlined into the modal.
--->
-<div id="modal-1" style="display:none;">Modal 1 content</div>
-<div id="modal-2" style="display:none;">Modal 2 content</div>
+<div id="modal-1" class="modal-hider">Modal 1 content</div>
+<div id="modal-2" class="modal-hider">Modal 2 content</div>
 ```
 
----
-#### 4. Formulate a bunch of zany CSS rules.
+> Note: Vanilla Modal applies the class specified by `loadClass` to the `page` element.
+  Both are specified in settings, and default respectively to `vanilla-modal` and `body`.
+  This is done in order to make the modal as accessible as possible for all use cases.
 
-<sup><sub>You nutty professor, you.</sub></sup>
-
-#### [Here's an example stylesheet (written in SCSS)](https://gist.github.com/benceg/245eb1c6d36af35a7cce#file-modal-scss)
-
-Forget choppy UI animations and JavaScript modal display parameters. Vanilla Modal keeps display specifications where they belong: in stylesheets. Hardware acceleration optional, but recommended, as is the liberal use of `vw`, `vh` and `calc` units to win friends and influence people.
-
-The only things to remember here are:
-* Using `display: none;` will get rid of any transitions you might otherwise be using.
-* Whatever property you're using to obfuscate the modal (`z-index` in the example below) will need a `transition-length` of `0` and a `transition-delay` property of the length of the other transitions. For example:
-```sass
-transition: opacity 0.2s, z-index 0s 0.2s;
+```html
+<style type="text/css">
+  body.vanilla-modal .modal-hider {
+    position: absolute;
+    left: -99999em;
+  }
+</style>
 ```
 
----
-#### 5. Delegates and Methods
+#### 4. Create a VanillaModal instance.
 
-Only two HTML delegates affect the modal. By default:
-* `[rel="modal:open"]` maps to `modal.open()` and
-* `[rel="modal:close]` maps to `modal.close()`, where `modal` is the VanillaModal instance name.
+```javascript
+const modal = new VanillaModal(options);
+```
+
+> (Where `options` is a configuration hash. The full list of options, as well as their defaults, are listed below under the "Options and Defaults" heading.)
+
+
+#### 5. Add your own CSS rules.
+
+[Here's the demo's stylesheet](http://thephuse.github.io/vanilla-modal/css.css). Scroll down to the `Modal starts here` section.
+
+Vanilla Modal separates concerns to the extent that all display logic is handled by CSS. Hardware acceleration via CSS transforms comes highly recommended, for a smooth device-agnostic experience.
+
+Two things to keep in mind:
+
+* Using `display: none;` on any element will efface transitions you might otherwise wish to use.
+
+* Whatever property you're using when closing the modal (`z-index` in the example below) will need a `transition-length` of `0` and a `transition-delay` property of the length of the longest other transition. This prevents the modal's obfuscating property from kicking in ahead of the closing animation (e.g. changing the `z-index` before the `opacity` animation has played out).
+
+      ```css
+      transition: opacity 0.2s, z-index 0s 0.2s;
+      ```
+
+
+#### 6. Delegation and Built-in Methods
+
+Default delegate targets are as follows:
+
+* `[rel="modal:open"]` triggers `modal.open()`.
+
+* `[rel="modal:close]` triggers `modal.close()`.
+
+> Deprecation notice: these defaults will change from the outset of VanillaModal 2.0.
+
+Examples follow:
+
+The following element will open `#modal-1` using VanillaModal.
 
 ```html
 <a href="#modal-1" rel="modal:open">Modal 1</a>
 ```
-...will open `#modal-1` inside the modal, while...
+
+The element below will close the modal.
 
 ```html
 <a rel="modal:close">Close</a>
 ```
-...will close the modal.
 
-The defaults can be changed at instantiation:
+These defaults can easily be changed at instantiation:
 
 ```js
-var modal = new VanillaModal({ open : '.my-open-class', close : '.my-close-class' });
+const modal = new VanillaModal({
+  open : '.my-open-class',
+  close : '.my-close-class'
+});
 ```
 
----
-#### 6. Programmatically flashing a message on screen
 
-If you need to flash a modal on screen for any reason, it can be done by passing a DOM selector string to the the `open()` function.
+#### 7. Programmatically opening a modal
+
+If you need to open the modal automatically, you can do so by passing a DOM ID string to the the `open()` function.
 
 For example:
 
 ```js
-var modal = new VanillaModal();
-
-// Flashes a message on the screen to annoy people.
-modal.open('#psa');
-
-// Closes the modal while they're still looking for the close button.
-setTimeout(function() {
-  modal.close();
-}, 2000);
+const modal = new VanillaModal();
+modal.open('#foo');
 ```
 
-...although this is a truly evil practice and should be avoided on pain of dismemberment.
+The modal can likewise be closed programmatically using the `close()` method.
 
----
-## Public Properties
+
+## VanillaModal Public Properties
 
 * `{Object} $`
 
-  The DOM nodes used for the modal.
+  A hash of DOM nodes used internally by the modal.
+  Useful if at any stage the modal's container needs to change.
 
 * `{Object} $$`
 
@@ -174,11 +186,11 @@ setTimeout(function() {
 
 * `{Boolean} isOpen`
 
-  Returns true if the modal is open.
+  `true` if the modal is open.
 
 * `{Node} current`
 
-  The DOM node currently displayed in the modal. Returns `null` if not set.
+  The DOM node currently displayed in the modal. `null` if not set.
 
 * `{Function} close()`
 
@@ -186,20 +198,24 @@ setTimeout(function() {
 
 * `{Function} open(String)`
 
-  The modal's callable `open` method. Requires an existing DOM selector string.
+  The modal's callable `open` method.
+  This requires the passed DOM ID target to be present on the page.
 
 * `{Function} destroy()`
 
-  Closes the modal and removes all event listeners.
+  Closes the modal and removes all event listeners and internal references.
+  This releases an instantiated modal to the next garbage collection cycle.
 
----
+
 ## Options and Defaults
 
-The options object contains DOM selector strings and bindings. It can be overridden at instantiation by providing an `options` object to `new VanillaModal(options)`.
+The options object contains DOM selector strings and bindings.
+Defaults are overridden by providing an `options` object to a new VanillaModal instance.
 
-The API is feature-frozen for the `version 1.x.x` branch.
+> Note: this API is feature-frozen for the 1.x release, but subject to change at 2.x.
 
 #### Defaults:
+
 ```js
 {
   modal : '.modal',
@@ -222,27 +238,32 @@ The API is feature-frozen for the `version 1.x.x` branch.
 
 * `{String} modal`
 
-  The class of the outer modal container. This is usually a fixed position element that takes up the whole screen. It doesn't have to be, though - the modal can just as easily be a discreet bar that pops out from the corner of the screen.
+  The class of the outer modal container. This is usually a fixed position element that takes up the whole screen.
+  It doesn't have to be, though - the modal can take the form of a toast popup, for example, or any type of overlay you can think of.
 
 * `{String} modalInner`
 
-  The inner container of the modal. This usually houses at least a close button (see HTML above). It should also contain the `modalContent` element.
+  The inner container of the modal.
+  This usually houses a close button at the very least (see HTML above).
+  It should also contain the `modalContent` element.
 
 * `{String} modalContent`
 
-  The container used to house the modal's content when it's transferred to the modal. This should always be a child of `modalInner`.
+  The container used to house the modal's content when it's transferred to the modal.
+  This must be a child of `modalInner`.
 
 * `{String} open`
 
-  The selector to bind the `open()` event to. This can be anything. I'd recommend using the default as it's generic and keeps code legible.
+  The selector to bind the `open()` event to.
 
 * `{String} close`
 
-  As above, except replace `open()` with `close()`, turn around three times, and pat yourself on the head.
+  The selector to bind the `close()` event to.
 
 * `{String} page`
 
-  A single outermost DOM selector to apply the `loadClass` and `class` classes to. This is `body` by default but could just as easily be `html` or `main` in any common web app.
+  The outermost DOM selector to apply the `loadClass` and `class` classes to.
+  This is `body` by default but could just as easily be `html` or `main` in any common web app.
 
 * `{String} loadClass`
 
@@ -254,33 +275,27 @@ The API is feature-frozen for the `version 1.x.x` branch.
 
 * `{Boolean} clickOutside`
 
-  If set to `true`, a click outside the modal will fire a `close()` event. Otherwise, the only ways to close the modal are to hit `[esc]` or click an item covered by the `close` query selector (default: `[rel="modal:close"]`).
+  If set to `true`, a click in the area outside the `modalInner` container will fire a `close()` event.
 
 * `{Array} closeKeys`
 
-  Hitting any keycodes contained within this array while the modal is open will fire a `close()` event. Set this to `false` or an empty array to disable keyboard modal closure. Defaults to [27], which is `esc`.
+  Hitting any keycodes contained within this array while the modal is open will fire a `close()` event.
+  Set this to `false` or an empty array to disable keyboard modal closure. Defaults to [27], which is `esc` on a traditional keyboard.
 
 * `{Boolean} transitions`
 
   If set to `false`, the modal will treat every browser like IE 9 and ignore transitions when opening and closing.
 
 * `{Function} onBeforeOpen`
+  `{Function} onBeforeClose`
+  `{Function} onOpen`
+  `{Function} onClose`
 
-  A function hook to fire before opening. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
+  Hooks that fire before their respective events. These are context-bound to the VanillaModal instance, and receive their triggering events (e.g. `click` or `keydown`) as its only arguments.
 
-* `{Function} onBeforeClose`
 
-  A function hook to fire before closing. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
-
-* `{Function} onOpen`
-
-  A function hook to fire on opening. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
-
-* `{Function} onClose`
-
-  A function hook to fire on closing. This function is bound to the modal instance. It receives the triggering event as its only argument and is context-bound to the Vanilla Modal instance.
-
----
 ## Compatibility
 
-This script works in the evergreen mobile & desktop browsers, IE 9 and above. It is thus far untested in Blackberry's browser and Opera Mini.
+This script works in the evergreen mobile & desktop browsers, as well as IE 11, 10, and 9 (the last has no support for transitions).
+
+It is not compatible with Opera Mini or the Blackberry browser, and there are currently no plans afoot to support either.

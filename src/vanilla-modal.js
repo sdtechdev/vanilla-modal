@@ -1,6 +1,6 @@
 /**
  * @class VanillaModal
- * @version 1.2.5
+ * @version 1.2.6
  * @author Ben Ceglowski
  */
 export class VanillaModal {
@@ -181,7 +181,7 @@ export class VanillaModal {
    * @param {Event} e
    */
   _close(e) {
-    if(this.isOpen === true){
+    if(this.isOpen === true) {
       this.isOpen = false;
       if (typeof this.$$.onBeforeClose === 'function') this.$$.onBeforeClose.call(this, e);
       this._removeClass(this.$.page, this.$$.class);
