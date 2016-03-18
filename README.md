@@ -161,7 +161,7 @@ const modal = new VanillaModal({
 
 #### 7. Programmatically opening a modal
 
-If you need to open the modal automatically, you can do so by passing a DOM ID string to the the `open()` function.
+If you need to open the modal automatically, you can do so by passing a DOM ID string to the `open()` function.
 
 For example:
 
