@@ -32,7 +32,6 @@ Since the modal's `open` and `close` event listeners are delegated from the docu
 
 If you're concerned about garbage collection, you may be pleased to know there's a `modal.destroy()` method baked in, which removes all internal events and references.
 
-
 ## Usage and Examples
 
 #### 1. Install the script.
@@ -43,21 +42,28 @@ npm install vanilla-modal --save-dev
 
 #### 2. Include the script in your project.
 
-* The script can be installed from NPM and included using Browserify:
+* The script is compiled using UMD module declarations. Use it with Webpack, Browserify, RequireJS or by simply including a `<script>` tag.
 
 * ES 2015
   ```javascript
-  import { VanillaModal } from 'vanilla-modal';
+  import VanillaModal from 'vanilla-modal';
   ```
 
 * CommonJS:
 	```javascript
-	var VanillaModal = require('vanilla-modal').VanillaModal;
+	var VanillaModal = require('vanilla-modal');
 	```
 
 * AMD
 	```javascript
-	require(['node_modules/vanilla-modal/dist/vanilla-modal.js'], function(vanillaModal) { ... });
+	require(['/node_modules/vanilla-modal/dist/index.js'], function(VanillaModal) {
+    var vanillaModal = new VanillaModal();
+  });
+	```
+
+* Browser
+	```html
+	<script src="/node_modules/vanilla-modal/dist/index.js"></script>
 	```
 
 #### 3. Create the modal's container using HTML.
