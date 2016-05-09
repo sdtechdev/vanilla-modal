@@ -1,9 +1,9 @@
 /**
  * @class VanillaModal
- * @version 1.2.6
+ * @version 1.4.0
  * @author Ben Ceglowski
  */
-export class VanillaModal {
+export default class VanillaModal {
 
   /**
    * @param {Object} [userSettings]
