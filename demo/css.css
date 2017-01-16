@@ -81,7 +81,6 @@ body > * {
   background: rgba(0, 0, 0, 0.6);
   z-index: -1;
   opacity: 0;
-  font-size: 0;
   transition: opacity 0.2s, z-index 0s 0.2s;
   text-align: center;
   overflow: hidden;
