@@ -51,19 +51,20 @@ npm install vanilla-modal --save-dev
 
 * CommonJS:
 	```javascript
-	var VanillaModal = require('vanilla-modal');
+	const VanillaModal = require('vanilla-modal');
 	```
 
 * AMD
 	```javascript
 	require(['/node_modules/vanilla-modal/dist/index.js'], function(VanillaModal) {
-    var vanillaModal = new VanillaModal();
+    const vanillaModal = new VanillaModal();
   });
 	```
 
 * Browser
 	```html
 	<script src="/node_modules/vanilla-modal/dist/index.js"></script>
+  <script>var vanillaModal = new VanillaModal.default()</script>
 	```
 
 #### 3. Create the modal's container using HTML.

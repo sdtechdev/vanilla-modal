@@ -4,20 +4,21 @@
     <title>Vanilla Modal</title>
     <meta charset="utf-8">
     <meta name="robots" content="noindex, nofollow">
-    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="page.css">
+    <link rel="stylesheet" href="modal.css">
   </head>
   <body>
 
     <div class="modal-links">
       <ul>
         <li>
-          <a href="#modal-1" rel="modal:open">One Prodigious Cat</a>
+          <a href="#modal-1" data-modal-open>One Prodigious Cat</a>
         </li>
         <li>
-          <a href="#modal-2" rel="modal:open">One More Prodigious Cat</a>
+          <a href="#modal-2" data-modal-open>One More Prodigious Cat</a>
         </li>
         <li>
-          <a href="#modal-3" rel="modal:open">Example Website</a>
+          <a href="#modal-3" data-modal-open>Example Website</a>
         </li>
       </ul>
     </div>
@@ -36,15 +37,12 @@
 
     <div class="modal">
       <div class="modal-inner">
-        <a rel="modal:close">&times;</a>
+        <span data-modal-close>&times;</span>
         <div class="modal-content"></div>
       </div>
     </div>
 
     <script src="../dist/index.js"></script>
-    <script>const modal = new VanillaModal()</script>
-
-    <!-- <script src="../legacy/index.js"></script>
-    <script>const modal = new VanillaModal()</script> -->
+    <script>var modal = new VanillaModal.default();</script>
   </body>
 </html>
