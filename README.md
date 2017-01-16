@@ -123,9 +123,9 @@ const modal = new VanillaModal(options);
 
 #### 5. Add your own CSS rules.
 
-[Here's the demo's stylesheet](http://thephuse.github.io/vanilla-modal/css.css). Scroll down to the `Modal starts here` section.
+[Here's the demo's stylesheet](http://thephuse.github.io/vanilla-modal/modal.css).
 
-Vanilla Modal separates concerns to the extent that all display logic is handled by CSS. Hardware acceleration via CSS transforms comes highly recommended, for a smooth device-agnostic experience.
+Vanilla Modal handles display logic using CSS. Hardware acceleration via CSS transforms comes highly recommended, for a smooth device-agnostic experience.
 
 Two things to keep in mind:
 
