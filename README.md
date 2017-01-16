@@ -36,9 +36,15 @@ If you're concerned about garbage collection, you may be pleased to know there's
 
 #### 1. Install the script.
 
-```sh
-npm install vanilla-modal --save-dev
-```
+* Using NPM:
+  ```sh
+  npm install vanilla-modal --save
+  ```
+
+* Using Bower:
+  ```sh
+  bower install vanilla-modal --save
+  ```
 
 #### 2. Include the script in your project.
 
