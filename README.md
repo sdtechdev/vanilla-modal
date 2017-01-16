@@ -160,8 +160,8 @@ These defaults can easily be changed at instantiation:
 
 ```js
 const modal = new VanillaModal({
-  open : '.my-open-class',
-  close : '.my-close-class'
+  open: '.my-open-class',
+  close: '.my-close-class'
 });
 ```
 
@@ -225,21 +225,21 @@ Defaults are overridden by providing an `options` object to a new VanillaModal i
 
 ```js
 {
-  modal : '.modal',
-  modalInner : '.modal-inner',
-  modalContent : '.modal-content',
-  open : '[rel="modal:open"]',
-  close : '[rel="modal:close"]',
-  page : 'body',
-  loadClass : 'vanilla-modal',
-  class : 'modal-visible',
-  clickOutside : false,
-  closeKeys : [27],
-  transitions : true,
-  onBeforeOpen : null,
-  onBeforeClose : null,
-  onOpen : null,
-  onClose : null
+  modal: '.modal',
+  modalInner: '.modal-inner',
+  modalContent: '.modal-content',
+  open: '[data-modal-open]',
+  close: '[data-modal-close]',
+  page: 'body',
+  loadClass: 'vanilla-modal',
+  class: 'modal-visible',
+  clickOutside: false,
+  closeKeys: [27],
+  transitions: true,
+  onBeforeOpen: null,
+  onBeforeClose: null,
+  onOpen: null,
+  onClose: null
 }
 ```
 
