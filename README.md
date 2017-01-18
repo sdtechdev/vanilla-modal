@@ -159,8 +159,6 @@ Default delegate targets are as follows:
 
 * `[data-modal-close]` triggers `modal.close()`.
 
-> Deprecation notice: these defaults will change from the outset of VanillaModal 2.0.
-
 Examples follow:
 
 The following element will open `#modal-1` using VanillaModal.
