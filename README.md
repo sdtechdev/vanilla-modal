@@ -97,7 +97,7 @@ The payoff is that you can make the modal look any way you wish.
 ```html
 <div class="modal">
   <div class="modal-inner">
-    <a rel="modal:close">Close</a>
+    <a data-modal-close>Close</a>
     <div class="modal-content"></div>
   </div>
 </div>
@@ -146,18 +146,18 @@ Two things to keep in mind:
 
 * Whatever property you're using when closing the modal (`z-index` in the example below) will need a `transition-length` of `0` and a `transition-delay` property of the length of the longest other transition. This prevents the modal's obfuscating property from kicking in ahead of the closing animation (e.g. changing the `z-index` before the `opacity` animation has played out).
 
-      ```css
-      transition: opacity 0.2s, z-index 0s 0.2s;
-      ```
+```
+transition: opacity 0.2s, z-index 0s 0.2s;
+```
 
 
 #### 6. Delegation and Built-in Methods
 
 Default delegate targets are as follows:
 
-* `[rel="modal:open"]` triggers `modal.open()`.
+* `[data-modal-open]` triggers `modal.open()`.
 
-* `[rel="modal:close]` triggers `modal.close()`.
+* `[data-modal-close]` triggers `modal.close()`.
 
 > Deprecation notice: these defaults will change from the outset of VanillaModal 2.0.
 
@@ -166,13 +166,13 @@ Examples follow:
 The following element will open `#modal-1` using VanillaModal.
 
 ```html
-<a href="#modal-1" rel="modal:open">Modal 1</a>
+<a href="#modal-1" data-modal-open>Modal 1</a>
 ```
 
 The element below will close the modal.
 
 ```html
-<a rel="modal:close">Close</a>
+<a data-modal-close>Close</a>
 ```
 
 These defaults can easily be changed at instantiation:
