@@ -91,17 +91,20 @@
     console.error('VanillaModal: ' + message);
   }
 
+  function find(arr, callback) {
+    return function (key) {
+      var filteredArray = arr.filter(callback);
+      return filteredArray[0] ? filteredArray[0][key] : undefined;
+    };
+  }
+
   function transitionEndVendorSniff() {
     var el = document.createElement('div');
-    var transitions = {
-      transition: 'transitionend',
-      OTransition: 'otransitionend',
-      MozTransition: 'transitionend',
-      WebkitTransition: 'webkitTransitionEnd'
-    };
-    return transitions[Object.keys(transitions).filter(function (key) {
-      return el.style[key] !== undefined;
-    })[0]];
+    var transitions = [{ key: 'transition', value: 'transitionend' }, { key: 'OTransition', value: 'otransitionend' }, { key: 'MozTransition', value: 'transitionend' }, { key: 'WebkitTransition', value: 'webkitTransitionEnd' }];
+    return find(transitions, function (_ref) {
+      var key = _ref.key;
+      return typeof el.style[key] !== 'undefined';
+    })('value');
   }
 
   function isPopulatedArray(arr) {
@@ -181,9 +184,11 @@
       this.outsideClickHandler = this.outsideClickHandler.bind(this);
       this.delegateOpen = this.delegateOpen.bind(this);
       this.delegateClose = this.delegateClose.bind(this);
+      this.listen = this.listen.bind(this);
+      this.destroy = this.destroy.bind(this);
 
       this.addLoadedCssClass();
-      this.events().add();
+      this.listen();
     }
 
     _createClass(VanillaModal, [{
@@ -281,12 +286,14 @@
     }, {
       key: 'closeModal',
       value: function closeModal(e) {
+        var onClose = this.settings.onClose;
+
         this.removeOpenId(this.dom.page);
         this.releaseNode(this.current);
         this.isOpen = false;
         this.current = null;
-        if (typeof this.settings.onClose === 'function') {
-          this.settings.onClose.call(this, e);
+        if (typeof onClose === 'function') {
+          onClose.call(this, e);
         }
       }
     }, {
@@ -370,28 +377,25 @@
         }
       }
     }, {
-      key: 'events',
-      value: function events() {
-        var _this2 = this;
-
+      key: 'listen',
+      value: function listen() {
         var modal = this.dom.modal;
 
-        var add = function add() {
-          modal.addEventListener('click', _this2.outsideClickHandler, false);
-          document.addEventListener('keydown', _this2.closeKeyHandler, false);
-          document.addEventListener('click', _this2.delegateOpen, false);
-          document.addEventListener('click', _this2.delegateClose, false);
-        };
-        this.destroy = function () {
-          _this2.close();
-          modal.removeEventListener('click', _this2.outsideClickHandler);
-          document.removeEventListener('keydown', _this2.closeKeyHandler);
-          document.removeEventListener('click', _this2.delegateOpen);
-          document.removeEventListener('click', _this2.delegateClose);
-        };
-        return {
-          add: add.bind(this)
-        };
+        modal.addEventListener('click', this.outsideClickHandler, false);
+        document.addEventListener('keydown', this.closeKeyHandler, false);
+        document.addEventListener('click', this.delegateOpen, false);
+        document.addEventListener('click', this.delegateClose, false);
+      }
+    }, {
+      key: 'destroy',
+      value: function destroy() {
+        var modal = this.dom.modal;
+
+        this.close();
+        modal.removeEventListener('click', this.outsideClickHandler);
+        document.removeEventListener('keydown', this.closeKeyHandler);
+        document.removeEventListener('click', this.delegateOpen);
+        document.removeEventListener('click', this.delegateClose);
       }
     }]);
 

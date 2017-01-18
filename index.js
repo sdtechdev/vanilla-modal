@@ -22,15 +22,22 @@ function throwError(message) {
   console.error(`VanillaModal: ${message}`);
 }
 
+function find(arr, callback) {
+  return (key) => {
+    const filteredArray = arr.filter(callback);
+    return (filteredArray[0] ? filteredArray[0][key] : undefined);
+  };
+}
+
 function transitionEndVendorSniff() {
   const el = document.createElement('div');
-  const transitions = {
-    transition: 'transitionend',
-    OTransition: 'otransitionend',
-    MozTransition: 'transitionend',
-    WebkitTransition: 'webkitTransitionEnd',
-  };
-  return transitions[Object.keys(transitions).filter(key => el.style[key] !== undefined)[0]];
+  const transitions = [
+    { key: 'transition', value: 'transitionend' },
+    { key: 'OTransition', value: 'otransitionend' },
+    { key: 'MozTransition', value: 'transitionend' },
+    { key: 'WebkitTransition', value: 'webkitTransitionEnd' },
+  ];
+  return find(transitions, ({ key }) => (typeof el.style[key] !== 'undefined'))('value');
 }
 
 function isPopulatedArray(arr) {
@@ -116,9 +123,11 @@ export default class VanillaModal {
     this.outsideClickHandler = this.outsideClickHandler.bind(this);
     this.delegateOpen = this.delegateOpen.bind(this);
     this.delegateClose = this.delegateClose.bind(this);
+    this.listen = this.listen.bind(this);
+    this.destroy = this.destroy.bind(this);
 
     this.addLoadedCssClass();
-    this.events().add();
+    this.listen();
   }
 
   getDomNodes() {
@@ -206,12 +215,13 @@ export default class VanillaModal {
   }
 
   closeModal(e) {
+    const { onClose } = this.settings;
     this.removeOpenId(this.dom.page);
     this.releaseNode(this.current);
     this.isOpen = false;
     this.current = null;
-    if (typeof this.settings.onClose === 'function') {
-      this.settings.onClose.call(this, e);
+    if (typeof onClose === 'function') {
+      onClose.call(this, e);
     }
   }
 
@@ -283,23 +293,20 @@ export default class VanillaModal {
     }
   }
 
-  events() {
+  listen() {
     const { modal } = this.dom;
-    const add = () => {
-      modal.addEventListener('click', this.outsideClickHandler, false);
-      document.addEventListener('keydown', this.closeKeyHandler, false);
-      document.addEventListener('click', this.delegateOpen, false);
-      document.addEventListener('click', this.delegateClose, false);
-    };
-    this.destroy = () => {
-      this.close();
-      modal.removeEventListener('click', this.outsideClickHandler);
-      document.removeEventListener('keydown', this.closeKeyHandler);
-      document.removeEventListener('click', this.delegateOpen);
-      document.removeEventListener('click', this.delegateClose);
-    };
-    return {
-      add: add.bind(this),
-    };
+    modal.addEventListener('click', this.outsideClickHandler, false);
+    document.addEventListener('keydown', this.closeKeyHandler, false);
+    document.addEventListener('click', this.delegateOpen, false);
+    document.addEventListener('click', this.delegateClose, false);
+  }
+
+  destroy() {
+    const { modal } = this.dom;
+    this.close();
+    modal.removeEventListener('click', this.outsideClickHandler);
+    document.removeEventListener('keydown', this.closeKeyHandler);
+    document.removeEventListener('click', this.delegateOpen);
+    document.removeEventListener('click', this.delegateClose);
   }
 }
