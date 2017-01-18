@@ -174,6 +174,7 @@
 
       this.isOpen = false;
       this.current = null;
+      this.isListening = false;
 
       this.settings = applyUserSettings(settings);
       this.dom = this.getDomNodes();
@@ -381,21 +382,31 @@
       value: function listen() {
         var modal = this.dom.modal;
 
-        modal.addEventListener('click', this.outsideClickHandler, false);
-        document.addEventListener('keydown', this.closeKeyHandler, false);
-        document.addEventListener('click', this.delegateOpen, false);
-        document.addEventListener('click', this.delegateClose, false);
+        if (!this.isListening) {
+          modal.addEventListener('click', this.outsideClickHandler, false);
+          document.addEventListener('keydown', this.closeKeyHandler, false);
+          document.addEventListener('click', this.delegateOpen, false);
+          document.addEventListener('click', this.delegateClose, false);
+          this.isListening = true;
+        } else {
+          throwError('Event listeners already applied.');
+        }
       }
     }, {
       key: 'destroy',
       value: function destroy() {
         var modal = this.dom.modal;
 
-        this.close();
-        modal.removeEventListener('click', this.outsideClickHandler);
-        document.removeEventListener('keydown', this.closeKeyHandler);
-        document.removeEventListener('click', this.delegateOpen);
-        document.removeEventListener('click', this.delegateClose);
+        if (this.isListening) {
+          this.close();
+          modal.removeEventListener('click', this.outsideClickHandler);
+          document.removeEventListener('keydown', this.closeKeyHandler);
+          document.removeEventListener('click', this.delegateOpen);
+          document.removeEventListener('click', this.delegateClose);
+          this.isListening = false;
+        } else {
+          throwError('Event listeners already removed.');
+        }
       }
     }]);
 
