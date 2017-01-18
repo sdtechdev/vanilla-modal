@@ -4,9 +4,22 @@
 
 [See the demo.](http://thephuse.github.io/vanilla-modal)
 
-### A tiny, flexible, completely dependency-free, CSS-powered JavaScript modal.
+### A tiny, flexible, completely dependency-free CSS-powered JavaScript modal.
 
-Written in ECMAScript 2015, and transpiled for universal use with Babel 6.
+Written in ECMAScript 2015 and transpiled for universal use with Babel 6.
+
+Contributions welcome.
+
+
+> ### Please be aware of recent breaking changes.
+>
+> #### If using a CDN
+> `new VanillaModal()` will now be `new VanillaModal.default()`. This is due to the way in which Babel 6
+> handles default exports.
+>
+> #### The semantically-unsound `[rel="modal:open"]` and `[rel="modal:close"]` default listeners have been deprecated.
+> They have been replaced by `[data-modal-open]` and `[data-modal-close]`.
+> Please update your codebase if you were not supplying `open` or `close` parameters to the modal.
 
 
 ## License
