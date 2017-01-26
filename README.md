@@ -13,11 +13,11 @@ Contributions welcome.
 
 > ### Please be aware of recent breaking changes.
 >
-> #### If using a CDN
+> #### If importing using a `<script/>` tag
 > `new VanillaModal()` will now be `new VanillaModal.default()`. This is due to the way in which Babel 6
 > handles default exports.
 >
-> #### The semantically-unsound `[rel="modal:open"]` and `[rel="modal:close"]` default listeners have been deprecated.
+> #### The semantically-unsound `[rel="modal:open"]` and `[rel="modal:close"]` default listeners have been deprecated
 > They have been replaced by `[data-modal-open]` and `[data-modal-close]`.
 > Please update your codebase if you were not supplying `open` or `close` parameters to the modal.
 
