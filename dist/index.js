@@ -55,18 +55,6 @@
     return target;
   };
 
-  function _toConsumableArray(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-        arr2[i] = arr[i];
-      }
-
-      return arr2;
-    } else {
-      return Array.from(arr);
-    }
-  }
-
   var defaults = {
     modal: '.modal',
     modalInner: '.modal-inner',
@@ -124,9 +112,9 @@
     if (!(el instanceof HTMLElement)) {
       throwError('Not a valid HTML element.');
     }
-    el.setAttribute('class', [].concat(_toConsumableArray(el.className.split(' ').filter(function (cn) {
+    el.setAttribute('class', el.className.split(' ').filter(function (cn) {
       return cn !== className;
-    })), [className]).join(' '));
+    }).concat(className).join(' '));
   }
 
   function removeClass(el, className) {
@@ -155,7 +143,7 @@
   }
 
   function matches(e, selector) {
-    var allMatches = [].concat(_toConsumableArray((e.target.document || e.target.ownerDocument).querySelectorAll(selector)));
+    var allMatches = (e.target.document || e.target.ownerDocument).querySelectorAll(selector);
     for (var i = 0; i < allMatches.length; i += 1) {
       var node = e.target;
       while (node && node !== document.body) {

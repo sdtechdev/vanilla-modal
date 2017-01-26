@@ -59,10 +59,7 @@ function addClass(el, className) {
   }
   el.setAttribute(
     'class',
-    [
-      ...el.className.split(' ').filter(cn => cn !== className),
-      className,
-    ].join(' '),
+    el.className.split(' ').filter(cn => cn !== className).concat(className).join(' '),
   );
 }
 
@@ -95,7 +92,7 @@ function applyUserSettings(settings) {
 }
 
 function matches(e, selector) {
-  const allMatches = [...(e.target.document || e.target.ownerDocument).querySelectorAll(selector)];
+  const allMatches = (e.target.document || e.target.ownerDocument).querySelectorAll(selector);
   for (let i = 0; i < allMatches.length; i += 1) {
     let node = e.target;
     while (node && node !== document.body) {
