@@ -199,15 +199,6 @@ The modal can likewise be closed programmatically using the `close()` method.
 
 ## VanillaModal Public Properties
 
-* `{Object} $`
-
-  A hash of DOM nodes used internally by the modal.
-  Useful if at any stage the modal's container needs to change.
-
-* `{Object} $$`
-
-  The modal's settings object.
-
 * `{Boolean} isOpen`
 
   `true` if the modal is open.
