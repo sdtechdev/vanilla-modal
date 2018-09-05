@@ -4,11 +4,11 @@
 
 [See the demo.](http://benceg.github.io/vanilla-modal/)
 
+# Note: This is no longer under active maintenance.
+
 ### A tiny, flexible, completely dependency-free CSS-powered JavaScript modal.
 
 Written in ECMAScript 2015 and transpiled for universal use with Babel 6.
-
-Contributions welcome.
 
 
 > ### Please be aware of recent breaking changes.
