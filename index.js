@@ -294,7 +294,7 @@ export default class VanillaModal {
   listen() {
     const { modal } = this.dom;
     if (!this.isListening) {
-      modal.addEventListener('click', this.outsideClickHandler, false);
+      modal.addEventListener('mousedown', this.outsideClickHandler, false);
       document.addEventListener('keydown', this.closeKeyHandler, false);
       document.addEventListener('click', this.delegateOpen, false);
       document.addEventListener('click', this.delegateClose, false);
@@ -308,7 +308,7 @@ export default class VanillaModal {
     const { modal } = this.dom;
     if (this.isListening) {
       this.close();
-      modal.removeEventListener('click', this.outsideClickHandler);
+      modal.removeEventListener('mousedown', this.outsideClickHandler);
       document.removeEventListener('keydown', this.closeKeyHandler);
       document.removeEventListener('click', this.delegateOpen);
       document.removeEventListener('click', this.delegateClose);
