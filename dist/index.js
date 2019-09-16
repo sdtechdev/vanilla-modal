@@ -331,7 +331,9 @@
       key: 'outsideClickHandler',
       value: function outsideClickHandler(e) {
         var clickOutside = this.settings.clickOutside;
-        var modalInner = this.dom.modalInner;
+        var _dom = this.dom,
+            modalInner = _dom.modalInner,
+            modal = _dom.modal;
 
         if (clickOutside) {
           var node = e.target;
@@ -341,7 +343,11 @@
             }
             node = node.parentNode;
           }
-          this.close(e);
+
+          if (e.clientX <= modal.clientWidth) {
+            // if mouse is not on scroll bar
+            this.close(e);
+          }
         }
       }
     }, {
