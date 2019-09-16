@@ -261,7 +261,7 @@ export default class VanillaModal {
 
   outsideClickHandler(e) {
     const { clickOutside } = this.settings;
-    const { modalInner } = this.dom;
+    const { modalInner, modal } = this.dom;
     if (clickOutside) {
       let node = e.target;
       while (node && node !== document.body) {
@@ -270,7 +270,10 @@ export default class VanillaModal {
         }
         node = node.parentNode;
       }
-      this.close(e);
+
+      if (e.clientX <= modal.clientWidth) { // if mouse is not on scroll bar
+        this.close(e);
+      }
     }
   }
 
